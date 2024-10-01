@@ -1,5 +1,3 @@
-![svkgs_arende](https://github.com/svkau/SvKGS-Arendehandlingar/assets/13225565/c16f2550-24cf-4a56-ae7f-5f257bc839dc)
-
 # Värdelistor
 
 Version 1.0
