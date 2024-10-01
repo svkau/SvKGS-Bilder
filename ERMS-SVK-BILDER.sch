@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Namn:		ERMS-SVK-ARENDE.sch
+Namn:		ERMS-SVK-BILDER.sch
 Version:	0.1
-Ändrad:		2023-09-05
+Ändrad:		2024-10-01
 Ändrad av:	Henrik Vitalis
 -->
 
