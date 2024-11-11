@@ -52,17 +52,25 @@ Svenska kyrkans utformning av leveranspaket (SIP) utgår från Riksarkivets spec
 Specifikationerna i det här dokumentet beskriver arkivobjektet, det vill säga den information som
 ska arkiveras. Det utgör endast en del av hela arkivpaketet. För mer information om leveranspaket,, se [SvKGS-Leveransbeskrivning](https://github.com/svkau/SvKGS-Leveransbeskrivning/blob/main/SvKGS-Leveransbeskrivning.md#svkgs-leveransbeskrivning)
 
-# 2. Specifikationer för ärendehandlingar
+# 2. Specifikationer för bilder
 
-*SvKGS Ärendehandlingar* avser arkivering av ärendeakter med tillhörande handlingar.
-Specifikationerna är främst avsedda för arkivering av information från diarieföringssystem som
-t.ex. Tietoevrys **Public 360°**, Vitecs **Acta** och **FAS** samt Eniacs **Aveny**.
+*SvKGS Bilder* avser arkivering av digitala bilder.
+Specifikationerna är främst avsedda för amatörfotografier som har tagits i församlingsverksamheten för att dokumentera händelser av olika slag.
+Bilder som har tagits fram i ett mer specialiserat syfte, t.ex. ritningar, kartor och bilder för inventarieförteckningar kräver troligen en
+annan uppsättning av metadata än den *SvKGS Bilder* kan erbjuda.
 
-Registrerad information om ett ärende och dess ingående handlingar bevaras i ett XML-dokument som
+Registrerad information om en bild bevaras i ett XML-dokument som
 regleras av specifikationerna genom användandet av scheman (XSD och Schematron).
-Även bifogade filer (i godkänt arkivformat) kan arkiveras.
 
-*SvKGS Ärendehandlingar* följer helt och hållet *Specification for the E-ARK Content Information Type
+*SvKGS Bilder* tillåter också att man sparar metadata inbäddade i bildfilen i formatet [XMP](https://www.adobe.com/devnet/xmp.html).
+Metadata som sparas på detta sätt måste höra till någon av följande namnrymder:
+
+- **XMP namespace**: http://ns.adobe.com/xap/1.0/
+- **Photoshop namespace**: http://ns.adobe.com/photoshop/1.0/
+- **Exif**: http://cipa.jp/exif/1.0/
+- **Dublin** Core: http://purl.org/dc/elements/1.1/
+
+*SvKGS Bilder* följer helt och hållet *Specification for the E-ARK Content Information Type
 Specification for Electronic Records Management Systems* (ERMS) version 2.1.0.
 Detta innebär att specifikationen också följer [FGS Ärendehantering 2.0](https://www.riksarkivet.se/faststallda-kommande-fgser)
 och [Riksarkivets tillämpning av CITS ERMS (för överlämnande till Riksarkivet)](https://www.riksarkivet.se/Media/pdf-filer/doi-t/Riksarkivets_tillampning_CITS_ERMS_overlamnande_V1.0.pdf). 
@@ -73,17 +81,16 @@ Dessa redovisas nedan i detta dokument.
 
 ## 2.2. XML-dokumentet
 
-Det XML-dokument som innehåller information om en ärendeakt och de ingående handlingarna definieras i ett XML-schema.
+Det XML-dokument som innehåller information bilder definieras i ett XML-schema.
 Se avsnittet [Scheman](#24-scheman) nedan. Detta är XML-dokumentets grundläggande uppbyggnad:
 
 
 
 - erms (1...1)
     - control (1...1)
-    - aggregations (1...1)
-      - aggregation (1...1) 
-          - record (1...n)
-            - appendix (1...n)
+    - records (1...1)
+      - record (1...n)
+      	- appendix (1...n)
 
 
 Elementet `erms` är dokumentets rot-element. Elementet `control` innehåller underelement med information om
