@@ -63,12 +63,13 @@ Registrerad information om en bild bevaras i ett XML-dokument som
 regleras av specifikationerna genom användandet av scheman (XSD och Schematron).
 
 *SvKGS Bilder* tillåter också att man sparar metadata inbäddade i bildfilen i formatet [XMP](https://www.adobe.com/devnet/xmp.html).
+
 Metadata som sparas på detta sätt måste höra till någon av följande namnrymder:
 
 - **XMP namespace**: http://ns.adobe.com/xap/1.0/
 - **Photoshop namespace**: http://ns.adobe.com/photoshop/1.0/
 - **Exif**: http://cipa.jp/exif/1.0/
-- **Dublin** Core: http://purl.org/dc/elements/1.1/
+- **Dublin Core**: http://purl.org/dc/elements/1.1/
 
 *SvKGS Bilder* följer helt och hållet *Specification for the E-ARK Content Information Type
 Specification for Electronic Records Management Systems* (ERMS) version 2.1.0.
@@ -92,21 +93,19 @@ Se avsnittet [Scheman](#24-scheman) nedan. Detta är XML-dokumentets grundlägga
       - record (1...n)
       	- appendix (1...n)
 
+Notera att elementet `aggragation` inte används i specifikationen. Varje enskild bild betraktas som ett `record`, och bilderna leveras löpande
+utan någon form av aggregering.
 
 Elementet `erms` är dokumentets rot-element. Elementet `control` innehåller underelement med information om
 själva XML-dokumentet (se avsnitt [3.1. Övergripande information om XML-dokumentet](#31-övergripande-information-om-xml-dokumentet)).
 
-Elementet `aggregations` rymmer underelement av typen aggregation, vilket i det här fallet betyder ärendeakt
+Elementet `records` rymmer underelement av typen `record`, vilket i det här fallet betyder bild.
 (se avsnitt [3.3. Information om ärendeakter](#33-information-om-ärendeakter)).
-Notera att det i *SvKGS Ärendehandlingar* endast får finnas en aggregation i varje XML-dokument.
 
-Elementet `aggregation` kan innehålla flera element av typen `record`, alltså ärendehandlingar
-(se avsnitt [3.4. Information om ärendehandlingar](#34-information-om-ärendehandlingar)).
-
-Varje `record` kan innehålla flera elementet av typen `appendix` som är en bifogad fil till den registrerade handlingen
+Varje `record` kan innehålla flera elementet av typen `appendix` som är en bifogad bildfil till den registrerade bilden.
 (se avsnitt [3.5. Information om bifogade filer](#35-information-om-bifogade-filer)).
 
-Observera att det tillagda elementet `svkAppendix` används i *SvKGS Ärendehandlingar* i stället för ERMS-elementet `appendix`.
+Observera att det tillagda elementet `svkAppendix` används i *SvKGS Bilder* i stället för ERMS-elementet `appendix`.
 
 I elementlistorna nedan finns de element som bör eller måste finnas i ett XML-dokument enligt *SvKGS Ärendehandlingar*.
 
@@ -545,10 +544,7 @@ Den underlättare förståelsen av informationen, om XML-filen skulle separeras 
 
 ---
 
-## 3.2. Element som används för information om både ärendeakter och handlingar
-
-Flera element såväl i ERMS som i *SvKGS Ärendehandlingar* kan användas för att ange information om både
-ärendeakter och handlingar. De kan alltså användas på flera ställen i XML-dokumentet.
+## 3.2. Element som används för information om elektroniska bilder.
 
 ### 3.2.1. Aktörer
 
@@ -572,16 +568,7 @@ vars värde hämtas från [ERMS-SVK-ARENDE-värdelista 8](ERMS-SVK-ARENDE-vardel
 
 ```xml
 <agents>
-    <agent agentType="responsible_person">
-        <name>Fredrik Johansson</name>
-        <organisation>Kyrkstadens församling</organisation>
-        <idNumber idNumberType="username">fredjo</idNumber>
-    </agent>
-    <agent agentType="counterpart">
-        <name>Exempelföretaget AB</name>
-        <idNumber idNumberType="organisationsnummer">1234567890</idNumber>
-    </agent>
-    <agent agentType="other" otherAgentType="closing_person">
+    <agent agentType="other" otherAgentType="photographer">
         <name>Anna Pettersson</name>
         <organisation>Kyrkstadens församling</organisation>
         <idNumber idNumberType="username">annpet</idNumber>
@@ -605,8 +592,6 @@ Elementet `date` kräver datatypen dateTime. Se avsnittet **[2.5. Datatyper](#25
 ```xml
 <dates>
     <date dateType="created">2020-05-20T00:00:00</date>
-    <date dateType="opened">2020-05-22T00:00:00</date>
-    <date dateType="closed">2020-05-30T00:00:00</date>
 </dates>
 ```
 ---
@@ -621,10 +606,11 @@ Elementet `date` kräver datatypen dateTime. Se avsnittet **[2.5. Datatyper](#25
 (ERMS253, ERMS57)
 
 >Samlingselement för uppgift om sekretess.
+>I *SvKGS Bilder* används sekretessmarkering enbart för markera bilder med levande personer.
 
 > Elementet kan upprepas.
 >
-> Om elementet *Sekretess* används måste attributet `restrictionType` ha värdet ”confidential”.
+> Om elementet *Sekretess* används måste attributet `restrictionType` ha värdet ”gdpr”.
 
 > **XML-element:**	`restriction`<br/>
 
@@ -635,6 +621,7 @@ Elementet `date` kräver datatypen dateTime. Se avsnittet **[2.5. Datatyper](#25
 (ERMS253, ERMS57)
 
 >Fritext som beskriver sekretessen.
+>Fast värde: "Personfotografi".
 
 > **XML-element:**	`explanatoryText`<br/>
 > **Datatyp:**	string
@@ -646,7 +633,8 @@ Elementet `date` kräver datatypen dateTime. Se avsnittet **[2.5. Datatyper](#25
 (ERMS59)
 
 >Hänvisning till paragraf i kyrkoordningens 54 kapitel, till Offentlighets- och sekretesslagen
-> eller till annat lagrum som stöder den angivna sekretessen.
+>eller till annat lagrum som stöder den angivna sekretessen.
+>Fast värde: "KO 54:11b"
 
 > **XML-element:**	`regulation`<br/>
 > **Datatyp:**	string
@@ -658,6 +646,7 @@ Elementet `date` kräver datatypen dateTime. Se avsnittet **[2.5. Datatyper](#25
 (ERMS62)
 
 >Datum från och med vilket sekretessen anses gälla.
+>I regel samma datum som bilden har tagits.
 
 >Om elementet *Sekretessdatum* används, måste attributet `dateType` ha värdet ”created”.
 
@@ -669,623 +658,13 @@ Elementet `date` kräver datatypen dateTime. Se avsnittet **[2.5. Datatyper](#25
 #### Exempel 6 – Sekretessmarkering
 
 ```xml
-<restriction restrictionType="confidential">
-    <explanatoryText>Sekretess enligt KO</explanatoryText>
-    <regulation>KO 54:2</regulation>
+<restriction restrictionType="gdpr">
+    <explanatoryText>Personfotografi</explanatoryText>
+    <regulation>KO 54:11b</regulation>
     <dates>
         <date dateType="created">2020-01-02T00:00:00</date>
     </dates>
 </restriction>
-```
-
----
-
-#### ERMS-SVK:26 - *Kommentar*
-
-(ERMS212, ERMS50)
-
-> Kommentar till ärendet eller handlingen.
- 
-> Kommentaren utgörs av en enda sammanhängande text och är inte möjlig att upprepa. Se exemplet nedan.
-> 
-> I *SvKGS Ärendehandlingar* har elementet `notes` alltså ett mycket snävare användningsområde
-> än vad som är fallet i ERMS.
-> 
-> För upprepade kommentarer eller anteckningar används i stället elementet `svkNotes`, se [SVK-ERMS:34](#erms-svk34---anteckningar).
->
-> Om elementet *Kommentar* används, måste `noteType` ha värdet ”comment”.
-
-> **XML-element:**	`notes/note/@noteType="comment"`<br/>
-> **Datatyp:**	string
-
----
-
-#### ERMS-SVK:27 - *Datum för kommentar*
-
-(ERMS51)
-
-> Datum då kommentaren skapades.
-
-> **XML-element:**	`notes/note/@noteDate`<br/>
-> **Datatyp:**	dateTime
-
----
-
-#### Exempel 7 – Kommentar
-
-```xml
-<aggregation>
-	<notes>
-		<note noteType="comment" noteDate="2019-02-21T00:00:00">Detta är en kommentar</note>
-	</notes>
-</aggregation>
-```
----
-
-### Elementlista 3. Tillagda element
-
----
-
-#### ERMS-SVK:28 - *Relaterade objekt*
-
-> Samlingselement med referenser till objekt som ärendet relaterar till.
-
-> Objekten kan vara projekt eller fastigheter.
-
-> **XML-element:** `svk:relatedObjects`<br/>
-
----
-
-#### ERMS-SVK:29 - *Relaterat objekt*
-
-> Referens till objekt som ärendet relaterar till.
-
-> Elementet kan upprepas.
-
-> **XML-element:** `svk:relatedObject`<br/>
-
----
-
-#### ERMS-SVK:30 - *Typ av objekt*
-
-> Anger vilken typ av objekt det är fråga om.
-
-> Obligatoriskt om elementet *Relaterat objekt* används. Värdet väljs från [Värdelista 18](ERMS-SVK-ARENDE-vardelistor.md#erms-svk-arende-v%C3%A4rdelista-18---typ-av-objekt).
-
-> **XML-element:** `svk:relatedObject/@typeOfObject`<br/>
-> **Datatyp:** token
-
----
-
-#### ERMS-SVK:31 - *Objektnamn*
-
-> Det relaterade objektets namn.
-
-> Obligatoriskt om elementet *Relaterat objekt* används.
-
-> **XML-element:** `svk:objectName`<br/>
-> **Datatyp:** token
-
----
-
-#### ERMS-SVK:32 - *ObjektID*
-
-> Projektnummer, fastighetsbeteckning eller annan identifikator för objektet.
-
-> Obligatoriskt om elementet *Relaterat objekt* används.
-
-> **XML-element:** `svk:objectId`<br/>
-> **Datatyp:** token
-
----
-
-#### ERMS-SVK:33 - *Internt ID*
-
-> Objektets id-nummer i det levererande systemet.
-
-> **XML-element:** `svk:deliveringSystemId`<br/>
-> **Datatyp:** token
-
----
-
-#### Exempel 8 – Relaterat objekt
-
-```xml
-<svk:relatedObjects>
-    <svk:relatedObject typeOfObject="project">
-        <svk:objectName>Omläggning av kyrktaket 2009</svk:objectName>
-        <svk:objectId>P 2009:1</svk:objectId>
-        <svk:deliveringSystemId>34958</svk:deliveringSystemId>
-    </svk:relatedObject>
-</svk:relatedObjects>
-```
-
----
-
-#### ERMS-SVK:34 - *Anteckningar*
-
-> Samlingselement för anteckningar kopplade till ett ärende eller dokument.
-
-> **XML-element:** `svk:svkNotes`<br/>
-
----
-
-#### ERMS-SVK:35 - *Anteckning*
-
-> Enskild anteckning kopplad till ärendet eller dokumentet.
-
-> Elementet kan upprepas.
-
-> **XML-element:** `svk:svkNote`<br/>
-
----
-
-#### ERMS-SVK:36 - *Typ av anteckning*
-
-> Kategorisering av anteckningen.
-
-> Obligatoriskt om elementet *Anteckning* används. Värdet väljs från [Värdelista 10](ERMS-SVK-ARENDE-vardelistor.md#erms-svk-arende-v%C3%A4rdelista-10---typ-av-anteckning).
-
-> **XML-element:** `svk:svkNote/@typeOfNote`<br/>
-> **Datatyp:** token
-
----
-
-#### ERMS-SVK:37 - *Text*
-
-> Anteckningens lydelse.
-
-> Obligatoriskt om elementet *Anteckning* används.
-
-> **XML-element:** `svk:noteText`<br/>
-> **Datatyp:** string
-
----
-
-#### ERMS-SVK:38 - *Skapare av anteckning*
-
-> Person som har gjort anteckningen.
-
-> Obligatoriskt om elementet *Anteckning* används.
-> 
-> Se avsnitt [3.2.1. Aktörer](ERMS-SVK-ARENDE.md#321-aktörer).
-> 
-> Attributet `agentType` måste ha värdet *creator*.
-
-> **XML-element:** `svk:agents/agent/@agentType="creator"`
-
----
-
-#### ERMS-SVK:39 - *Datum för anteckning*
-
-> Datum och tid när anteckningen gjordes.
-
-> Obligatoriskt om elementet *Anteckning* används.
-> 
-> Se avsnitt [3.2.2. Datum](ERMS-SVK-ARENDE.md#322-datum).
-> 
-> Attributet `dateType` måste ha värdet *created*
-
-> **XML-element:** `dates/date/dateType="created"`<br/>
-> **Datatyp:** dateTime
-
----
-
-#### Exempel 9 – Anteckningar
-
-```xml
-<svk:ermsSvkAggregation>
-	<svk:svkNotes>
-		<svk:svkNote typeOfNote="generell anteckning">
-			<svk:noteText>Detta är en anteckning</svk:noteText>
-			<svk:agents>
-                <agent agentType="creator">
-                    <name>Jörgen Persson</name>
-                </agent>
-            </svk:agents>
-			<dates>
-                <date dateType="created">2019-02-23T00:00:00</date>
-            </dates>
-		</svk:svkNote>
-	</svk:svkNotes>
-</svk:ermsSvkAggregation>
-```
----
-
-#### ERMS-SVK:40 - *Ändringslogg*
-
-> Samlingselement för loggningsuppgifter.
-
-> **XML-element:** `svk:auditLogEvents`<br/>
-
----
-
-#### ERMS-SVK:41 - *Händelse*
-
-> Enskild händelse i ändringsloggen.
-
-> Obligatoriskt om elementet *Ändringslogg* används.
-
-> **XML-element:** `svk:auditLogEvent`<br/>
-
----
-
-#### ERMS-SVK:42 - *Tid*
-
-> Datum och tid då ändringen gjordes.
-
-> Obligatoriskt om elementet *Händelse* används.
-
-> **XML-element:** `svk:eventTime`<br/>
-> **Datatyp:** dateTime
-
----
-
-#### ERMS-SVK:43 - *Användare*
-
-> Namn på personen som gjorde ändringen.
-
-> Obligatoriskt om elementet *Händelse* används.
-
-> **XML-element:** `svk:user`<br/>
-> **Datatyp:** token
-
----
-
-#### ERMS-SVK:44 - *Tillämpningsområde*
-
-> Beskrivning av det som ändringen avser.
-
-> Obligatoriskt om elementet *Händelse* används. Värdet väljs från [Värdelista 11](ERMS-SVK-ARENDE-vardelistor.md#erms-svk-arende-v%C3%A4rdelista-11---till%C3%A4mpningsomr%C3%A5de).
-
-> **XML-element:** `svk:scope`<br/>
-> **Datatyp:** token
-
----
-
-#### ERMS-SVK:45 - *Åtgärd*
-
-> Beskrivning av ändringen.
-
-> Obligatoriskt om elementet *Händelse* används. Värdet väljs från [Värdelista 12](ERMS-SVK-ARENDE-vardelistor.md#erms-svk-arende-v%C3%A4rdelista-12---%C3%A5tg%C3%A4rd).
-
-> **XML-element:** `svk:action`<br/>
-> **Datatyp:** token
-
----
-
-#### ERMS-SVK:46 - *Värde före ändring*
-
-> Om ett värde har ändrats, anges här lydelsen före ändringen.
-
-> **XML-element:** `svk:valueBeforeChange`<br/>
-> **Datatyp:** token
-
----
-
-#### ERMS-SVK:47 - *Värde efter ändring*
-
-> Om ett värde har ändrats, anges här lydelsen efter ändringen.
-
-> **XML-element:** `svk:valueAfterChange`<br/>
-> **Datatyp:** token
-
----
-
-#### Exempel 10 – Ändringslogg
-
-```xml
-<svk:auditLogEvents>
-    <svk:auditLogEvent>
-        <svk:time>2009-09-22T11:47:00</svk:time>
-        <svk:user> Jörgen Persson</svk:user>
-        <svk:scope>ärende</svk:scope>
-        <svk:action>create</svk:action>
-    </svk:auditLogEvent>
-    <svk:auditLogEvent>
-        <svk:time>2009-09-22T11:52:00</svk:time>
-        <svk:user>Jörgen Persson</svk:user>
-        <svk:scope>ärendemening</svk:scope>
-        <svk:action>update</svk:action>
-        <svk:valueBeforeChange>Upphandling av frysboxar</svk:valueBeforeChange>
-        <svk:valueAfterChange>Upphandling av kylskåp</svk:valueAfterChange>
-    </svk:auditLogEvent>
-    <svk:auditLogEvent>
-        <svk:time>2009-09-22T12:10:00</svk:time>
-        <svk:user> Jörgen Persson </svk:user>
-        <svk:scope>ärendestatus</svk:scope>
-        <svk:action>update</svk:action>
-        <svk:valueBeforeChange>Öppet</svk:valueBeforeChange>
-        <svk:valueAfterChange>Makulerat</svk:valueAfterChange>
-    </svk:auditLogEvent>
-</svk:auditLogEvents>
-```
-
----
-
-## 3.3. Information om ärendeakter
-
----
-
-### Elementlista 4. Ärendeakter
-
----
-
-#### ERMS-SVK:48 - *Ärendeakt*
-
-(ERMS198)
-
-> Samlingsobjekt för ärendeakten med ingående dokument och filer.
-
-> Obligatoriskt.
-> 
-> Varje ärendeakt ska dokumenteras i en XML-fil, och ingen XML-fil får innehålla mer än en ärendeakt.
-
-> **XML-element:**	`aggregation`
-
----
-
-#### ERMS-SVK:49 - *Identifikator*
-
-(ERMS199)
-
-> Identifikator för ärendeakten i form av UUID. Identifikatorn anges automatiskt redan i det levererande systemet eller vid överföring till e-arkivet.
-
-> Obligatoriskt.
-
-> **XML-element:**	`aggregation/@systemIdentifier`<br/>
-> **Datatyp:**	string
-
----
-
-#### ERMS-SVK:50 - *Typ av aggregation*
-
-(ERMS200)
-
-> Typ av aggregation, vilket i den här specifikationen alltid är ”caseFile”, det vill säga ”ärendeakt”.
-
-> Obligatoriskt.
-
-> **XML-element:**	`aggregation/@aggregationType=”caseFile”`<br/>
-> **Datatyp:**	string
-
----
-
-#### Exempel 11 – Ärendeakt
-
-```xml
-<aggregation systemIdentifier="3b9fbc5f-3eaf-4521-9726-0f142feb04c3" aggregationType="caseFile">
-```
-
----
-
-#### ERMS-SVK:51 - *Ärendenummer*
-
-(ERMS218)
-
-> Ärendets officiella nummer, ”diarienumret”.
-
-> Obligatoriskt.
-> 
-> Ärendenumret ska ha formatet [diariekod] [årtal]-[löpnummer].
-> Diariekoden ska bestå av versaler. Löpnumret ska bestå av fyra siffror
-> och fylls vid behov ut med nollor, t.ex. S 2019-0043.
-
-> **XML-element:**	`objectId`<br/>
-> **Datatyp:**	string
-
----
-
-#### ERMS-SVK:52 - *Arkivansvarigs ID*
-
-(ERMS219)
-
-> Ett unikt ID för den arkivansvariga enheten.
-
-> Obligatoriskt. Värdet på attributet `extraIdType` hämtas från [Värdelista 4](ERMS-SVK-ARENDE-vardelistor.md#erms-svk-arende-v%C3%A4rdelista-4---typ-av-id).
-
-> **XML-element:**	`extraId`<br/>
-> **Datatyp:**	string
-
----
-
-#### ERMS-SVK:53 - *Intern identifikator*
-
-(ERMS219)
-
-> Befintligt id i det levererande systemet.
-
-> Om elementet *Intern identifikator* används, måste attributet `extraIdType` ha värdet ”deliveringSystemId”.
-
-> **XML-element:**	extraId/@deliveringSystemId`<br/>
-> **Datatyp:**	string
-
----
-
-#### Exempel 12 – Ärendenummer och Intern identifikator
-
-```xml
-<aggregation>
-	<objectId>F 2019-0032</objectId>
-	<extraId extraIdType="organisationsnummer">0987654321</extraId>
-	<extraId extraIdType="deliveringSystemId">34565</extraId>
-</aggregation>
-```
-
----
-
-#### ERMS-SVK:54 - *Informationsklassning*
-
-(ERMS202)
-
-> Ärendets informationsklass.
-
-> **XML-element:**	`informationClass`<br/>
-> **Datatyp:**	string
-
----
-
-#### ERMS-SVK:55 - *Säkerhetsklassning*
-
-(ERMS203)
-
-> Ärendets säkerhetsklass.
-
-> **XML-element:**	`securityClass`<br/>
-> **Datatyp:**	string
-
----
-
-#### ERMS-SVK:56 - *Klassificering*
-
-(ERMS208)
-
-> Namnet på den process i den officiella klassificeringsstrukturen som har angivits som klassificering av ärendet och de ingående handlingarna.
-
-> **XML-element:**	`classification`<br/>
-> **Datatyp:**	string
-
----
-
-#### ERMS-SVK:57 - *Klassificeringskod*
-
-(ERMS75)
-
-> Namnet på den process i den officiella klassificeringsstrukturen som har angivits som klassificering av ärendet och de ingående handlingarna.
-
-> **XML-element:**	`classification/@classificationCode`<br/>
-> **Datatyp:**	string
-
----
-
-#### Exempel 13 – Klassificering
-
-```xml
-<aggregation>
-	<classification classificationCode="2.7">Ge service</classification>
-</aggregation>
-```
-
----
-
-#### ERMS-SVK:58 - *Nyckelord*
-
-(ERMS223)
-
-> Samlingselement för nyckelord.
-
-> **XML-element:**	`keywords`<br/>
-
----
-
-#### ERMS-SVK:59 - *Nyckelord*
-
-(ERMS224)
-
-****
-
-> Enskilt nyckelord.
-
-> Elementet kan upprepas.
-
-> **XML-element:**	`keyword`<br/>
-> **Datatyp:**	string
-
----
-
-#### Exempel 14 – Nyckelord
-
-```xml
-<aggregation>
-	<keywords>
-		<keyword>församlingsordning</keyword>
-		<keyword>kyrkorådet</keyword>
-	</keywords>
-</aggregation>
-```
-
----
-
-#### ERMS-SVK:60 - *Ärendemening*
-
-(ERMS209)
-
-> Ärendemening, ärendets titel.
-
-> **XML-element:**	`title`<br/>
-> **Datatyp:**	string
-
----
-
-#### ERMS-SVK:61 - *Offentlig titel*
-
-(ERMS210)
-
-> Används endast för Offentlig titel i leveranser från Public 360°.
-
-> Om elementet `otherTitel` används måste attributet `titleType` ha värdet ”public”.
-
-> **XML-element:**	`otherTitle/@titleType="public"`<br/>
-> **Datatyp:**	string
-
----
-
-#### Exempel 15 – Ärendemening och Offentlig titel
-
-```xml
-<aggregation>
-	<title>Ärendets titel</title>
-	<otherTitle titleType="public">En offentlig titel</otherTitle>
-</aggregation>
-```
-
----
-
-#### ERMS-SVK:62 - *Ärendestatus*
-
-(ERMS239)
-
-> Ärendets status.
-
-> Obligatoriskt. Värdet väljs från [Värdelista 7](ERMS-SVK-ARENDE-vardelistor.md#erms-svk-arende-v%C3%A4rdelista-7---%C3%A4rende--och-handlingsstatus).
->
-> Giltiga värden:”closed” (avslutat) eller ”obliterated” (makulerat).
- 
-```xml
-<aggregation>
-	<status value="closed"/>
-</aggregation>
-```
-
-> **XML-element:**	`status/@value`<br/>
-> **Datatyp:**	string
-
----
-
-#### ERMS-SVK:63 - *Ärendereferens*
-
-(ERMS52-53)
-
-> Referens till och/eller från annat ärende.
-
-> Elementet kan upprepas.
->
-> Om möjligt anges det andra ärendets *Ärendenummer* enligt specifikationen i detta dokument,
-> annars ärendenumret i annat format eller fritext.
-> 
-> Om elementet *Ärendereferens* används, måste attributet `relationType` ha värdet ”reference”.
-
-> **XML-element:**	`relation/@relationType="reference"`<br/>
-> **Datatyp:**	string
-
----
-
-#### Exempel 16 – Ärendereferens
-
-```xml
-<aggregation>
-	<relation relationType="reference">F 2019-0454</relation>
-</aggregation>
 ```
 
 ---
@@ -1338,237 +717,7 @@ Elementet `date` kräver datatypen dateTime. Se avsnittet **[2.5. Datatyper](#25
 
 ---
 
-#### ERMS-SVK:67 - *Handläggare*
 
-> Ansvarig handläggare för ärendet.
-
-> Om elementet *Handläggare* används, måste attributet `agentType` ha värdet ”responsible_person”.
- 
-> Om `idNumber` används hämtas värdet för `idNumberType`från [Värdelista 8](ERMS-SVK-ARENDE-vardelistor.md#erms-svk-arende-v%C3%A4rdelista-8---typ-av-idnumber).
-
-> **XML-element:**	`agent/@agentType="responsible_person"`
-
----
-
-#### ERMS-SVK:68 - *Medhandläggare*
-
-(ERMS232)
-
-****
-
-> Eventuella medhandläggare utöver den ansvariga.
-
-> Elementet kan upprepas.
-> 
-> Om elementet *Medhandläggare* används, måste attributet `agentType` ha värdet ”editor”.
- 
-> Om `idNumber` används hämtas värdet för `idNumberType`från [Värdelista 8](ERMS-SVK-ARENDE-vardelistor.md#erms-svk-arende-v%C3%A4rdelista-8---typ-av-idnumber).
-
-> **XML-element:**	`agent/@agentType="editor"`
-
----
-
-#### ERMS-SVK:69 - *Ärendepart*
-
->Extern part i ärendet.
-
-> Elementet kan upprepas.
-> 
->Om elementet *Ärendepart* används, måste attributet `agentType` ha värdet ”counterpart”.
- 
-> Om `idNumber` används hämtas värdet för `idNumberType`från [Värdelista 8](ERMS-SVK-ARENDE-vardelistor.md#erms-svk-arende-v%C3%A4rdelista-8---typ-av-idnumber).
-
-> **XML-element:**	`agent/@agentType="counterpart`
-
----
-
-#### ERMS-SVK:70 - *Annan aktör*
-
-> Annan typ av aktör eller kontakt kopplad till ärendet.
-
-> Elementet kan upprepas.
-> 
-> Om elementet *Annan aktör* används, måste attributet `agentType` ha värdet ”agent”.
- 
-> Om `idNumber` används hämtas värdet för `idNumberType`från [Värdelista 8](ERMS-SVK-ARENDE-vardelistor.md#erms-svk-arende-v%C3%A4rdelista-8---typ-av-idnumber).
-
-> **XML-element:**	`agent/agentType="agent"`
-
----
-
-#### ERMS-SVK:71 - *Avslutare*
-
-> Den som har avslutat eller makulerat ärendet.
-
-> Om elementet *Avslutare* används, måste attributet `agentType` ha värdet ”other”
-> och `otherAgentType` värdet ”closing_person”.
-
-> Om `idNumber` används hämtas värdet för `idNumberType`från [Värdelista 8](ERMS-SVK-ARENDE-vardelistor.md#erms-svk-arende-v%C3%A4rdelista-8---typ-av-idnumber).
-
-> **XML-element:**	`agent/@agentType="other" @otherAgentType="closing_person"`
-
----
-
-#### ERMS-SVK:72 - *Beskrivning*
-
-(ERMS211)
-
->En beskrivning av ärendet utöver *Ärendemening*.
-
-> **XML-element:**	`description`<br/>
-> **Datatyp:**	string
-
----
-
-#### ERMS-SVK:73 - *Datum*
-
-(ERMS204-206)
-
-> Samlingselement för datum som gäller för ärendet.
-
-> Se avsnitt [3.2.2. Datum](ERMS-SVK-ARENDE.md#322-datum).
-
-> **XML-element:**	`dates`<br/>
-
----
-
-#### ERMS-SVK:74 - *Skapat*
-
-(ERMS232)
-
-> Datum då ärendet skapades i systemet. Här avses ett av systemet automatiskt satt datum.
-
-> Obligatoriskt.
-> 
-> Om uppgiften saknas i diariesystemet, används samma datum som för *Öppnat*.
-> 
-> Om elementet *Skapat* används, måste `dateType` ha värdet ”created”.
-
-> **XML-element:**	`date/@dateType=”created”`<br/>
-> **Datatyp:**	dateTime
-
----
-
-#### ERMS-SVK:75 - *Öppnat*
-
-> Datum då ärendet officiellt öppnades.
-
-> Obligatoriskt.
-> 
-> Om elementet *Öppnat* används, måste `dateType` ha värdet ”opened”.
-
-> **XML-element:**	`date/@dateType=”opened”`<br/>
-> **Datatyp:**	dateTime
-
----
-
-#### ERMS-SVK:76 - *Avslutat*
-
-> Datum då ärendet avslutades eller makulerades.
-
-> Obligatoriskt.
-> 
-> Om elementet *Avslutat* används, måste `dateType` ha värdet ”closed”.
-
-> **XML-element:**	`date/@dateType=”closed”`<br/>
-> **Datatyp:**	dateTime
-
----
-
-#### ERMS-SVK:77 - *Beslut i ärendet*
-
-(ERMS240)
-
->Samlingselement som används för uppgifter om beslut som har fattats i ärendet och
-> som i diariesystemet har registrerats separat och inte som en vanlig handling.
-
->Elementet kan upprepas.
-> 
-> *SvKGS Ärendehandlingar* har alltså ett betydligt snävare användningsområde
-> av elementet `action` än vad som är fallet i ERMS.
-
-> **XML-element:**	`action`<br/>
-
----
-
-#### ERMS-SVK:78 - *Beslutstext*
-
-(ERMS84)
-
->Beslutets lydelse samt ev. referens till protokoll.
-
-> Obligatoriskt om elementet *Beslut i ärendet* används.
-
-> **XML-element:**	`actionText`<br/>
-> **Datatyp:**	string
-
----
-
-#### ERMS-SVK:79 - *Typ av händelse*
-
-(ERMS87)
-
-> Obligatoriskt om elementet *Beslut i ärendet* används.
-> 
-> Elementet måste ha värdet ”beslut”.
-
-> **XML-element:**	`actionType`<br/>
-> **Datatyp:**	string
-
----
-
-#### ERMS-SVK:80 - *Beslutsdatum*
-
-(ERMS89, ERMS47)
-
-> Datum då beslutet fattades.
- 
-> Om elementet *Beslutsdatum* används, måste `dateType` ha värdet ”decision_date”.
->
-> Se avsnittet [3.2.2 Datum](ERMS-SVK-ARENDE.md#322-datum).
-
-> **XML-element:**	`dates/date/@dateType=”decision_date”`<br/>
-> **Datatyp:**	dateTime
-
----
-
-#### ERMS-SVK:81 - *Beslutsfattare*
-
-(ERMS90-91, 93)
-
-> Namn på person eller organ som har fattat beslutet.
- 
-> Se avsnittet [3.2.1 Aktörer](ERMS-SVK-ARENDE.md#321-aktörer).
-> 
-> Om elementet *Beslutsfattare* används, måste `agentType` ha värdet ”authorising_person”.
-
-> **XML-element:**	`agents/agent/@agentType="authorising_person"`<br/>
-
----
-
-#### Exempel 17 – Beslut i ärendet
-
-```xml
-<aggregation>
-	<action>
-		<actionText>Beslutets lydelse</actionText>
-		<actionType>beslut</actionType>
-		<dates>
-			<actionDate dateType="decision_date">2020-05-20T00:00:00</actionDate>
-		</dates>
-		<agents>
-			<agent agentType="authorising_person">
-				<name>Kyrkorådet</name>
-			</agent>
-		</agents>
-	</action>
-</aggregation>
-```
----
-
-#### *Kommentar*
-
-> Se [ERMS-SVK:26](ERMS-SVK-ARENDE.md#erms-svk26---kommentar).
 
 ---
 
@@ -1597,40 +746,7 @@ Elementet `date` kräver datatypen dateTime. Se avsnittet **[2.5. Datatyper](#25
 
 ---
 
-#### ERMS-SVK:84 - *Initiativ*
 
-> Anger om initiativ till ärendets öppnande är externt
-> (genom en inkommande handling), eller om ärendet har öppnats på eget (internt) initiativ.
-
-> Värdet väljs från [Värdelista 9](ERMS-SVK-ARENDE-vardelistor.md#erms-svk-arende-v%C3%A4rdelista-9---initiativ).
-> Möjliga värden: ”externt”eller ”eget”.
-
-> **XML-element:** `svk:initiative`<br/>
-> **Datatyp:** token
-
----
-
-#### *Relaterade objekt*
-
-> Se [ERMS-SVK:28](ERMS-SVK-ARENDE.md#erms-svk28---relaterade-objekt).
-
----
-
-#### *Anteckningar*
-
-> Se [ERMS-SVK:34](ERMS-SVK-ARENDE.md#erms-svk34---anteckningar).
-
----
-
-#### *Ändringslogg*
-
-> Se [ERMS-SVK:40](ERMS-SVK-ARENDE.md#erms-svk40---ändringslogg).
-
----
-
-## 3.4. Information om ärendehandlingar
-
----
 
 ### Elementlista 6. Ärendehandlingar
 
