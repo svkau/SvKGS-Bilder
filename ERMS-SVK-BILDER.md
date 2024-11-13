@@ -546,171 +546,7 @@ Den underlättare förståelsen av informationen, om XML-filen skulle separeras 
 
 ## 3.2. Element som används för information om elektroniska bilder.
 
-### 3.2.1. Aktörer
-
-Elementen `agents` och `agent` används som en standard för att beskriva en person eller en organisation
-som fungerar som aktör i något avseende. Olika typer av aktörer anges genom attributet `agentType` vars
-värde hämtas från [ERMS-SVK-ARENDE-värdelista 6](ERMS-SVK-ARENDE-vardelistor.md#erms-svk-arende-v%C3%A4rdelista-6---typ-av-akt%C3%B6r-agenttype).
-
-Om man vill använda ett värde i ERMS-SVK-ARENDE-värdelista 6 som inte ingår i ERMS utan är en
-anpassning i *SvKGS Ärendehandlingar*, måste attributet `agentType` ha värdet "other". I detta
-fall används attributet `otherAgentType` för att ange typ av aktör.
-
-Elementet `agents` är ett samlingselement för ett eller flera element av typen `agent` som i sin tur
-har underelementen `name` (string), `organisation` (string), `idNumber` (string) och `role` (string).
-Av dessa är `name` det enda som är obligatoriskt.
-
-Elementet `idNumber` kan användas för att ange t.ex. personnummer men också användarnamn och andra
-identifikatorer som inte är nummer. Olika typer av `idNumber` anges genom attributet `idNumberType`,
-vars värde hämtas från [ERMS-SVK-ARENDE-värdelista 8](ERMS-SVK-ARENDE-vardelistor.md#erms-svk-arende-v%C3%A4rdelista-8---typ-av-idnumber).
-
-#### Exempel 4 – Aktörer
-
-```xml
-<agents>
-    <agent agentType="other" otherAgentType="photographer">
-        <name>Anna Pettersson</name>
-        <organisation>Kyrkstadens församling</organisation>
-        <idNumber idNumberType="username">annpet</idNumber>
-    </agent>
-</agents>
-```
-
-### 3.2.2. Datum
-
-Elementen `dates` och `date` används som standard för att ange datum i XML-dokumentet. Olika typer av
-datum anges genom attributet `dateType`, vars värde hämtas från [ERMS-SVK-ARENDE-värdelista 22](ERMS-SVK-ARENDE-vardelistor.md#erms-svk-arende-värdelista-22---datum).
-
-Om man vill använda ett värde i [ERMS-SVK-ARENDE-värdelista 22](ERMS-SVK-ARENDE-vardelistor.md#erms-svk-arende-värdelista-22---datum) som inte ingår i ERMS utan är en
-anpassning i *SvKGS Ärendehandlingar*, måste attributet `dateType` ha värdet "other". I detta
-fall används attributet `otherDateType` för att ange typ av datum.
-
-Elementet `date` kräver datatypen dateTime. Se avsnittet **[2.5. Datatyper](#25-datatyper)**.
-
-#### Exempel 5 – Datum
-
-```xml
-<dates>
-    <date dateType="created">2020-05-20T00:00:00</date>
-</dates>
-```
----
-
-### Elementlista 2. ERMS standardelement
-
----
-
-#### ERMS-SVK:22 - *Sekretessmarkering*
-
-
-(ERMS253, ERMS57)
-
->Samlingselement för uppgift om sekretess.
->I *SvKGS Bilder* används sekretessmarkering enbart för markera bilder med levande personer.
-
-> Elementet kan upprepas.
->
-> Om elementet *Sekretess* används måste attributet `restrictionType` ha värdet ”gdpr”.
-
-> **XML-element:**	`restriction`<br/>
-
----
-
-#### ERMS-SVK:23 - *Förklarande text*
-
-(ERMS253, ERMS57)
-
->Fritext som beskriver sekretessen.
->Fast värde: "Personfotografi".
-
-> **XML-element:**	`explanatoryText`<br/>
-> **Datatyp:**	string
-
----
-
-#### ERMS-SVK:24 - *Lagrum*
-
-(ERMS59)
-
->Hänvisning till paragraf i kyrkoordningens 54 kapitel, till Offentlighets- och sekretesslagen
->eller till annat lagrum som stöder den angivna sekretessen.
->Fast värde: "KO 54:11b"
-
-> **XML-element:**	`regulation`<br/>
-> **Datatyp:**	string
-
----
-
-#### ERMS-SVK:25 - *Sekretessdatum*
-
-(ERMS62)
-
->Datum från och med vilket sekretessen anses gälla.
->I regel samma datum som bilden har tagits.
-
->Om elementet *Sekretessdatum* används, måste attributet `dateType` ha värdet ”created”.
-
-> **XML-element:**	`dates/date/@dateType="created"`<br/>
-> **Datatyp:**	dateTime
-
----
-
-#### Exempel 6 – Sekretessmarkering
-
-```xml
-<restriction restrictionType="gdpr">
-    <explanatoryText>Personfotografi</explanatoryText>
-    <regulation>KO 54:11b</regulation>
-    <dates>
-        <date dateType="created">2020-01-02T00:00:00</date>
-    </dates>
-</restriction>
-```
-
----
-
-#### ERMS-SVK:64 - *Utökad XML-data*
-
-(ERMS252, ERMS43)
-
-> Utökad XML-data är en del av Svenska kyrkans anpassning av ERMS.
-
-> Obligatoriskt
-> 
-> Se [Elementlista 5](ERMS-SVK-ARENDE.md#elementlista-5-svenska-kyrkans-tilläggsinformation-om-ärendeakter).
-
-> **XML-element:**	`additionalXMLData`<br/>
-
----
-
-### Elementlista 5. Svenska kyrkans tilläggsinformation om ärendeakter.
-
----
-
-#### ERMS-SVK:82 - *Tilläggsinformation*
-
-> De element som inte ingår i ERMS utan är tillägg i Svenska kyrkans anpassning är samlade i elementet *Tilläggsinformation*.
-
-> Obligatoriskt.
-
-> **XML-element:** `additionalInformation/additionalXMLData/svk:ermsSvkArende/svk:ermsSvkAggregation`<br/>
-
----
-
-#### ERMS-SVK:83 - *Version av SvKGS Ärendehandlingar*
-
-> Anger vilken version av SvKGS Ärendehandlingar som XML-dokumentet är kompatibelt med.
-
-> Obligatoriskt.
-
-> **XML-element:** `svk:ermsSvkArende/@ermsSvkArendeVersion="1.0"` (decimal)<br/>
-
-
----
-
-
-
-### Elementlista 6. Bilder
+### Elementlista 2. Information om bilder - ERMS standardelement
 
 ---
 
@@ -722,7 +558,7 @@ Elementet `date` kräver datatypen dateTime. Se avsnittet **[2.5. Datatyper](#25
 
 > Obligatoriskt. Elementet kan upprepas.
 
-> **XML-element:** `record`<br/>
+> **XML-element:** `records/record`<br/>
 
 ---
 
@@ -794,7 +630,7 @@ Elementet `date` kräver datatypen dateTime. Se avsnittet **[2.5. Datatyper](#25
 (ERMS196)
 
 > Namnet på den process i den officiella klassificeringsstrukturen som har
-> angivits som klassificering av ärendet och de ingående handlingarna.
+> angivits som klassificering av bilden.
 
 > **XML-element:** `classification`<br/>
 > **Datatyp:** string
@@ -869,9 +705,7 @@ Elementet `date` kräver datatypen dateTime. Se avsnittet **[2.5. Datatyper](#25
 
 ---
 
-
-
-#### Exempel 22 – Titel och Offentlig titel
+#### Exempel 22 – Titel
 
 ```xml
 <record>
@@ -882,8 +716,73 @@ Elementet `date` kräver datatypen dateTime. Se avsnittet **[2.5. Datatyper](#25
 
 ---
 
+#### ERMS-SVK:22 - *Sekretessmarkering*
 
 
+(ERMS253, ERMS57)
+
+>Samlingselement för uppgift om sekretess.
+>I *SvKGS Bilder* används sekretessmarkering enbart i GDPR-syfte för markera bilder
+>med personer som är i livet vid arkiveringstillfället.
+
+>Elementet kan upprepas.
+>
+>Om elementet *Sekretess* används måste attributet `restrictionType` ha värdet ”gdpr”.
+
+> **XML-element:**	`restriction`<br/>
+
+---
+
+#### ERMS-SVK:23 - *Förklarande text*
+
+(ERMS253, ERMS57)
+
+>Fritext som beskriver sekretessen.
+>Fast värde: "Personfotografi".
+
+> **XML-element:**	`explanatoryText`<br/>
+> **Datatyp:**	string
+
+---
+
+#### ERMS-SVK:24 - *Lagrum*
+
+(ERMS59)
+
+>Hänvisning till paragraf i kyrkoordningens 54 kapitel, till Offentlighets- och sekretesslagen
+>eller till annat lagrum som stöder den angivna sekretessen.
+>Fast värde: "KO 54:11b"
+
+> **XML-element:**	`regulation`<br/>
+> **Datatyp:**	string
+
+---
+
+#### ERMS-SVK:25 - *Sekretessdatum*
+
+(ERMS62)
+
+>Datum från och med vilket sekretessen anses gälla.
+>I regel samma datum som bilden har tagits.
+
+>Om elementet *Sekretessdatum* används, måste attributet `dateType` ha värdet ”created”.
+
+> **XML-element:**	`dates/date/@dateType="created"`<br/>
+> **Datatyp:**	dateTime
+
+---
+
+#### Exempel 6 – Sekretessmarkering
+
+```xml
+<restriction restrictionType="gdpr">
+    <explanatoryText>Personfotografi</explanatoryText>
+    <regulation>KO 54:11b</regulation>
+    <dates>
+        <date dateType="created">2020-01-02T00:00:00</date>
+    </dates>
+</restriction>
+```
 
 ---
 
@@ -895,7 +794,7 @@ Elementet `date` kräver datatypen dateTime. Se avsnittet **[2.5. Datatyper](#25
 
 > Obligatoriskt.
 > 
-> Se avsnittet [3.2.1. Aktörer](ERMS-SVK-ARENDE.md#321-aktörer).
+> För mer information om elementet, se avsnittet [3.2.1. Aktörer](ERMS-SVK-ARENDE.md#321-aktörer).
 
 > **XML-element:** `agents`<br/>
 
@@ -907,15 +806,30 @@ Elementet `date` kräver datatypen dateTime. Se avsnittet **[2.5. Datatyper](#25
 
 > Den som har skapat bilden, fotograf.
 
-> Om elementet *Skapare* används, måste `agentType` ha värdet ”creator”.
+> Om elementet *Skapare* används, måste `agentType` ha värdet ”other”
+> och `otherAgentType` ha värdet "photographer".
 
 > **XML-element:** `agent/@agentType="creator`
 
 ---
 
+#### Exempel 4 – Aktörer
+
+```xml
+<agents>
+    <agent agentType="other" otherAgentType="photographer">
+        <name>Anna Pettersson</name>
+        <organisation>Kyrkstadens församling</organisation>
+        <idNumber idNumberType="username">annpet</idNumber>
+    </agent>
+</agents>
+```
+
 #### ERMS-SVK:109 - *Beskrivning*
 
 (ERMS)
+
+> Obligatoriskt.
 
 > Beskrivning av bilden.
 > 
@@ -929,9 +843,9 @@ Elementet `date` kräver datatypen dateTime. Se avsnittet **[2.5. Datatyper](#25
 
 (ERMS)
 
-> Samlingselement för alla datum som rör handlingen.
+> Samlingselement för alla datum som rör bilden.
 
-> Se avsnittet [3.2.2. Datum](ERMS-SVK-ARENDE.md#322-datum) ovan.
+> För mer information om elementet. se avsnittet [3.2.2. Datum](ERMS-SVK-ARENDE.md#322-datum) ovan.
 
 > **XML-element:** `dates`<br/>
 
@@ -952,12 +866,15 @@ Elementet `date` kräver datatypen dateTime. Se avsnittet **[2.5. Datatyper](#25
 
 ---
 
+#### Exempel 5 – Datum
 
+```xml
+<dates>
+    <date dateType="created">2020-05-20T00:00:00</date>
+</dates>
+```
 
-
-
-
-
+---
 
 #### ERMS-SVK:115 - *Utökad XML-data*
 
@@ -965,13 +882,13 @@ Elementet `date` kräver datatypen dateTime. Se avsnittet **[2.5. Datatyper](#25
 
 > Obligatoriskt.
 > 
-> Se [Elementlista 7](ERMS-SVK-ARENDE.md#elementlista-7-svenska-kyrkans-tilläggsinformation-om-ärendehandlingar).
+> Se [Elementlista 7](ERMS-SVK-BILDER.md#elementlista-3-svenska-kyrkans-tilläggsinformation-om-bilder).
 
 > **XML-element:** `additionalXMLData`<br/>
 
 ---
 
-### Elementlista 7. Svenska kyrkans tilläggsinformation om ärendehandlingar
+### Elementlista 3. Svenska kyrkans tilläggsinformation om bilder
 
 ---
 
@@ -985,13 +902,23 @@ Elementet `date` kräver datatypen dateTime. Se avsnittet **[2.5. Datatyper](#25
 
 ---
 
+#### ERMS-SVK:83 - *Version av SvKGS Bilder*
+
+> Anger vilken version av SvKGS Bilder som XML-dokumentet är kompatibelt med.
+
+> Obligatoriskt.
+
+> **XML-element:** `svk:ermsSvkArende/@ermsSvkBilderVersion="1.0"` (decimal)<br/>
+
+---
+
 #### ERMS-SVK:149 - *Bifogad fil*
 
-> Uppgifter om fil som är kopplad till den registrerade handlingen.
+> Uppgifter om fil som är kopplad till den registrerade bilden.
 
 > Elementet kan upprepas.
 > 
-> Se [Elementlista 8](ERMS-SVK-ARENDE.md#elementlista-8-bifogad-fil).
+> Se [Elementlista 4](ERMS-SVK-BILER.md#elementlista-4-bifogad-fil).
 
 > **XML-element:** `svk:ermsSvkRecord/svk:svkAppendix`<br/>
 
@@ -1005,13 +932,13 @@ I Svenska kyrkans anpassning av ERMS används i stället tilläggselementet
 
 ---
 
-### Elementlista 8. Bifogad fil
+### Elementlista 4. Bifogad fil
 
 ---
 
 #### ERMS-SVK:150 - *Bifogad fil*
 
-> Samlingselement för uppgifter om en fil som är kopplad till en registrerad handling.
+> Samlingselement för uppgifter om en fil som är kopplad till en registrerad bild.
 
 > Elementet kan upprepas.
 
@@ -1121,34 +1048,10 @@ I Svenska kyrkans anpassning av ERMS används i stället tilläggselementet
 
 ```xml
 <svk:svkAppendix>
-	<svk:appendix name="ansökan" path="filer/ansökan.pdf" fileFormat="pdf"/>
+	<svk:appendix name="kyrkoinvigningen" path="filer/238093d5-5ae5-438f-a043-7c340738e5d1.jpg" fileFormat="jpg"/>
 	<svk:fileInfo>
 		<svk:dateCreated>2010-02-01T00:00:00</svk:dateCreated>
 		<svk:dateLastEdited>2010-02-01T00:00:00</svk:dateLastEdited>
-		<svk:versionNumber>1</svk:versionNumber>
-		<svk:variant>preservation</svk:variant>
 	</svk:fileInfo>
-	<svk:signatureInfo>
-		<dates><date dateType="created">2024-04-18T10:22:04</date></dates>
-		<agent agentType="creator">
-			<name>Dorian Gray</name>
-			<organisation>Kyrkstadens församling</organisation>
-			<idNumber idNumberType="username">knet\xxxx</idNumber>
-		</agent>
-		<svk:signatureStatus>Slutförd</svk:signatureStatus>
-		<svk:signatureFileHash algorithm="SHA-1">2aae6c35c94fcfb415dbe95f408b9ce91ee846ed</svk:signatureFileHash>
-		<svk:signatories>
-			<svk:signatory>
-				<agent agentType="main_signatory"><name>Gregor Samsa</name></agent>
-				<dates><date dateType="main_signature">2024-04-18T10:22:04</date></dates>
-				<svk:signatoryComment>Nu har jag skrivit under!</svk:signatoryComment>
-			</svk:signatory>
-			<svk:signatory>
-				<agent agentType="main_signatory"><name>Josef K.</name></agent>
-				<dates><date dateType="main_signature">2024-04-19T10:22:04</date></dates>
-				<svk:signatoryComment>Jag har också skrivit under!</svk:signatoryComment>
-			</svk:signatory>
-		</svk:signatories>
-	</svk:signatureInfo>
 </svk:svkAppendix>
 ```
