@@ -62,7 +62,7 @@ annan uppsättning av metadata än den *SvKGS Bilder* kan erbjuda.
 Registrerad information om en bild bevaras i ett XML-dokument som
 regleras av specifikationerna genom användandet av scheman (XSD och Schematron).
 
-*SvKGS Bilder* tillåter också att man sparar metadata inbäddade i bildfilen i formatet [XMP](https://www.adobe.com/devnet/xmp.html).
+*SvKGS Bilder* kräver också att viss metadata sparas inbäddade i bildfilen i formatet [XMP](https://www.adobe.com/devnet/xmp.html).
 
 Metadata som sparas på detta sätt måste höra till någon av följande namnrymder:
 
@@ -836,6 +836,19 @@ Den underlättare förståelsen av informationen, om XML-filen skulle separeras 
 
 > **XML-element:** `description`<br/>
 > **Datatyp:** string
+
+> Motsvarande information ska också sparas inbäddad i bildfilen i XMP-format.
+> För elementet Beskrivning används Dublin Core-termen: http://purl.org/dc/elements/1.1/creator
+
+```xml
+<rdf:Description rdf:about='' xmlns:dc='http://purl.org/dc/elements/1.1/'>
+	<dc:creator>
+		<rdf:Seq>
+			<rdf:li>Jörgen Persson</rdf:li>
+		</rdf:Seq>
+	</dc:creator>
+<rdf:Description
+```
 
 ---
 
