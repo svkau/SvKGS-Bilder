@@ -838,15 +838,16 @@ Den underlättare förståelsen av informationen, om XML-filen skulle separeras 
 > **Datatyp:** string
 
 > Motsvarande information ska också sparas inbäddad i bildfilen i XMP-format.
+> 
 > För elementet Beskrivning används Dublin Core-termen: http://purl.org/dc/elements/1.1/creator
 
 ```xml
 <rdf:Description rdf:about='' xmlns:dc='http://purl.org/dc/elements/1.1/'>
-	<dc:creator>
-		<rdf:Seq>
-			<rdf:li>Jörgen Persson</rdf:li>
-		</rdf:Seq>
-	</dc:creator>
+    <dc:description>
+        <rdf:Alt>
+            <rdf:li xml:lang='x-default'>Interiör från kyrkokansliets arkiv, Sysslomansgatan 31, Uppsala</rdf:li>
+        </rdf:Alt>
+    </dc:description>
 <rdf:Description
 ```
 
