@@ -191,24 +191,14 @@ Dessutom måste den information som finns i ERMS-fälten vara identisk med den i
 | ERMS                           | XMP                    |
 |--------------------------------|------------------------|
 | ERMS-SVK:86 - *Identifikator*  |  xmpMM:DocumentID      |
-|--------------------------------|------------------------|
-|  ERMS-SVK:89 - *ObjektID*      |  xmpMM:DocumentID      |
-|---------------------------------------------------------|
+| ERMS-SVK:89 - *ObjektID*       |  xmpMM:DocumentID      |
 | ERMS-SVK:95 - *Nyckelord*      |  dc:subject            |
-|--------------------------------|------------------------|
 | ERMS-SVK:97 - *Titel*          |  dc:title              |
-|--------------------------------|------------------------|
 | ERMS-SVK:104 - *Skapare*       |  dc:creator            |
-|--------------------------------|------------------------|
 | ERMS-SVK:109 - *Beskrivning*   |  dc:description        |
-|--------------------------------|------------------------|
-| ERMS-SVK:111 - *Skapat*        |  photoshop:            |
-|--------------------------------|------------------------|
-| ERMS-SVK:164 - *Skapad*        |   xmp:CreateDate       |
-|--------------------------------|------------------------|
-| ERMS-SVK:165 - *Senast ändrad* |   xmp:ModifyDate       |
-|--------------------------------|------------------------|
-| 
+| ERMS-SVK:111 - *Skapat*        |  exif:DateTimeOriginal |
+| ERMS-SVK:164 - *Skapad*        |  xmp:CreateDate        |
+| ERMS-SVK:165 - *Senast ändrad* |  xmp:ModifyDate        |
 
 
 
