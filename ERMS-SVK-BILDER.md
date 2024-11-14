@@ -63,13 +63,7 @@ Registrerad information om en bild bevaras i ett XML-dokument som
 regleras av specifikationerna genom användandet av scheman (XSD och Schematron).
 
 *SvKGS Bilder* kräver också att viss metadata sparas inbäddade i bildfilen i formatet [XMP](https://www.adobe.com/devnet/xmp.html).
-
-Metadata som sparas på detta sätt måste höra till någon av följande namnrymder:
-
-- **XMP namespace**: http://ns.adobe.com/xap/1.0/
-- **Photoshop namespace**: http://ns.adobe.com/photoshop/1.0/
-- **Exif**: http://cipa.jp/exif/1.0/
-- **Dublin Core**: http://purl.org/dc/elements/1.1/
+Se avsnittet [Metadata i XMP-format](#26-metadata-i-xmp-format) nedan.
 
 *SvKGS Bilder* följer helt och hållet *Specification for the E-ARK Content Information Type
 Specification for Electronic Records Management Systems* (ERMS) version 2.1.0.
@@ -186,7 +180,47 @@ Vid angivande av tal (integer och decimal) används inte tusentalsavgränsare.
 
 Vid angivande av decimal används punkt som decimalavgränsare.
 
-## 2.6. Råd om användandet av *SvKGS Ärendehandlingar*
+## 2.6. Metadata i XMP-format
+Information om bilderna (metadata) ska dokumenteras både i XML-dokumentet (ERMS) och inbäddat i respektive bildfil i XMP-format.
+Utöver den obligatoriska informationen är det möjligt att i XMP-strukturen spara vilken metadata man själv önskar.
+
+Den XMP-information som finns inbäddad i bildfilen ska också ingå i ERMS-dokumentet. Se exemplet XMP-data nedan.
+
+Dessutom måste den information som finns i ERMS-fälten vara identisk med den information som finns i motsvarande fält i XMP-strukturen enligt nedanstående tabell
+
+| ERMS                           | XMP                    |
+|--------------------------------|------------------------|
+| ERMS-SVK:86 - *Identifikator*  |  xmpMM:DocumentID      |
+|--------------------------------|------------------------|
+|  ERMS-SVK:89 - *ObjektID*      |  xmpMM:DocumentID      |
+|---------------------------------------------------------|
+| ERMS-SVK:95 - *Nyckelord*      |  dc:subject            |
+|--------------------------------|------------------------|
+| ERMS-SVK:97 - *Titel*          |  dc:title              |
+|--------------------------------|------------------------|
+| ERMS-SVK:104 - *Skapare*       |  dc:creator            |
+|--------------------------------|------------------------|
+| ERMS-SVK:109 - *Beskrivning*   |  dc:description        |
+|--------------------------------|------------------------|
+| ERMS-SVK:111 - *Skapat*        |  photoshop:            |
+|--------------------------------|------------------------|
+| ERMS-SVK:164 - *Skapad*        |   xmp:CreateDate       |
+|--------------------------------|------------------------|
+| ERMS-SVK:165 - *Senast ändrad* |   xmp:ModifyDate       |
+|--------------------------------|------------------------|
+| 
+
+
+
+Metadata som sparas på detta sätt måste höra till någon av följande namnrymder:
+
+- **XMP namespace**: http://ns.adobe.com/xap/1.0/
+- **Photoshop namespace**: http://ns.adobe.com/photoshop/1.0/
+- **Exif**: http://cipa.jp/exif/1.0/
+- **Dublin Core**: http://purl.org/dc/elements/1.1/
+
+
+## 2.7. Råd om användandet av *SvKGS Bilder*
 
 I tabellerna med dataelement nedan har varje element en identifieringskod (t.ex. ERMS-SVK:1).
 Även elementets motsvarande kod i ERMS anges, om det inte är ett tillagt element.
@@ -197,17 +231,6 @@ Element kan få förekomma en enda gång eller upprepade gånger i ett XML-dokum
 Om ett element får upprepas, anges detta särskilt. I annat fall får elementet endast förekomma en gång.
 
 I tabellerna anges också motsvarande XML-elements namn och vilken datatyp som ska användas.
-
-Informationen i det levererande IT-systemet måste mappas mot specifikationens dataelement och sedan transformeras
-till ett XML-format som kan valideras av de scheman som ingår i specifikationen.
-Alla XML-filer måste ha teckenkodning UTF-8.
-
-En XML-fil får enbart innehålla ett enda ärende, men leveransen kan bestå av flera filer i separata undermappar.
-Varje sådant leveranspaket får bara innehålla ärenden från en och samma arkivbildare och ett och samma diarium.
-
-![erms_leverans](https://github.com/user-attachments/assets/28a88319-c5ea-4ddc-b3e8-577e4c59acf4)
-
-*Mappstruktur för ärendeleverans. Namn på mappar och filer är enbart exempel.*
 
 Innan en leverans till e-arkivet görs, måste den levererande parten och e-arkivets förvaltningsorganisation
 tillsammans upprätta en leveransöverenskommelse där villkor och förutsättningar för leveransen specificeras.
