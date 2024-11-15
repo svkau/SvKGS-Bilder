@@ -201,13 +201,10 @@ Dessutom måste den information som finns i ERMS-fälten vara identisk med den i
 | ERMS-SVK:165 - *Senast ändrad* |  xmp:ModifyDate        |
 
 
-
-Metadata som sparas på detta sätt måste höra till någon av följande namnrymder:
-
-- **XMP namespace**: http://ns.adobe.com/xap/1.0/
-- **Photoshop namespace**: http://ns.adobe.com/photoshop/1.0/
-- **Exif**: http://cipa.jp/exif/1.0/
-- **Dublin Core**: http://purl.org/dc/elements/1.1/
+- **XMP namespace** (xmp): `http://ns.adobe.com/xap/1.0/`
+- **XMP Media Management namespace** (xmpMM): `http://ns.adobe.com/xap/1.0/mm/`
+- **Exif** (exif): `http://ns.adobe.com/exif/1.0/`
+- **Dublin Core** (dc): `http://purl.org/dc/elements/1.1/`
 
 
 ## 2.7. Råd om användandet av *SvKGS Bilder*
