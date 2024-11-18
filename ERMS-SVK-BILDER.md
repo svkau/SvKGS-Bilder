@@ -80,12 +80,12 @@ Det XML-dokument som innehåller information bilder definieras i ett XML-schema.
 Se avsnittet [Scheman](#24-scheman) nedan. Detta är XML-dokumentets grundläggande uppbyggnad:
 
 
-
 - erms (1...1)
     - control (1...1)
     - records (1...1)
       - record (1...n)
-      	- appendix (1...n)
+      	- appendix (1...1)
+
 
 Notera att elementet `aggragation` inte används i specifikationen. Varje enskild bild betraktas som ett `record`, och bilderna leveras löpande
 utan någon form av aggregering.
@@ -100,6 +100,8 @@ Varje `record` kan innehålla flera elementet av typen `appendix` som är en bif
 (se avsnitt [3.5. Information om bifogade filer](#35-information-om-bifogade-filer)).
 
 Observera att det tillagda elementet `svkAppendix` används i *SvKGS Bilder* i stället för ERMS-elementet `appendix`.
+
+Till varje `record` får endast *en* fil kopplas (det är en anpassning av ERMS-standrad).
 
 I elementlistorna nedan finns de element som bör eller måste finnas i ett XML-dokument enligt *SvKGS Ärendehandlingar*.
 
@@ -581,6 +583,10 @@ Den underlättare förståelsen av informationen, om XML-filen skulle separeras 
 
 > Obligatoriskt.
 
+> Värdet ska vara det samma som anges för *ObjektID*.
+>
+> Värdet för *Identifikator* måste också vara det samma som anges i elementet `xmpMM:DocumentID` i bildfilens XMP-struktur.
+
 > **XML-element:** `record/@systemIdentifier`<br/>
 > **Datatyp:** string
 
@@ -629,6 +635,10 @@ Den underlättare förståelsen av informationen, om XML-filen skulle separeras 
 (ERMS146)
 
 > Obligatoriskt.
+>
+> Värdet ska vara det samma som anges för *Identifikator*
+>
+> Värdet för *ObjektID* måste också vara det samma som anges i elementet `xmpMM:DocumentID` i bildfilens XMP-struktur.
 
 > **XML-element:** `objectId`<br/>
 > **Datatyp:** string
@@ -686,6 +696,8 @@ Den underlättare förståelsen av informationen, om XML-filen skulle separeras 
 
 > Elementet kan upprepas.
 
+> De nyckelord som anges måste också anges i elementet `dc:subject` i bildfilens XMP-struktur.
+
 > **XML-element:** `keyword`<br/>
 > **Datatyp:** string
 
@@ -708,6 +720,8 @@ Den underlättare förståelsen av informationen, om XML-filen skulle separeras 
 (ERMS)
 
 > Titel på bilden.
+
+> Den titel som anges måste också anges i elementet `dc:title` i bildfilens XMP-struktur.
 
 
 > **XML-element:** `title`<br/>
@@ -819,6 +833,8 @@ Den underlättare förståelsen av informationen, om XML-filen skulle separeras 
 > Om elementet *Skapare* används, måste `agentType` ha värdet ”other”
 > och `otherAgentType` ha värdet "photographer".
 
+> Den skapare som anges måste också anges i elementet `dc:creator` i bildfilens XMP-struktur.
+
 > **XML-element:** `agent/@agentType="creator`
 
 ---
@@ -842,24 +858,11 @@ Den underlättare förståelsen av informationen, om XML-filen skulle separeras 
 > Obligatoriskt.
 
 > Beskrivning av bilden.
-> 
+
+> Den beskrivning som anges måste också anges i elementet `dc:description` i bildfilens XMP-struktur.
 
 > **XML-element:** `description`<br/>
 > **Datatyp:** string
-
-> Motsvarande information ska också sparas inbäddad i bildfilen i XMP-format.
-> 
-> För elementet Beskrivning används Dublin Core-termen: http://purl.org/dc/elements/1.1/creator
-
-```xml
-<rdf:Description rdf:about='' xmlns:dc='http://purl.org/dc/elements/1.1/'>
-    <dc:description>
-        <rdf:Alt>
-            <rdf:li xml:lang='x-default'>Interiör från kyrkokansliets arkiv, Sysslomansgatan 31, Uppsala</rdf:li>
-        </rdf:Alt>
-    </dc:description>
-<rdf:Description
-```
 
 ---
 
@@ -884,6 +887,8 @@ Den underlättare förståelsen av informationen, om XML-filen skulle separeras 
 > Obligatoriskt.
 >
 > Om elementet *Skapat* används, måste `dateType` ha värdet ”created”.
+
+> Det datum som anges måste också anges i elementet `exif:DateTimeOriginal` i bildfilens XMP-struktur.
 
 > **XML-element:** `date/@dateType=”created”`<br/>
 > **Datatyp:** dateTime
@@ -940,7 +945,7 @@ Den underlättare förståelsen av informationen, om XML-filen skulle separeras 
 
 > Uppgifter om fil som är kopplad till den registrerade bilden.
 
-> Elementet kan upprepas.
+> I *SvKGS Bilder* kan endast *en* fil kopplas till elementet `record`. Det är en anpassning av ERMS-standard.
 > 
 > Se [Elementlista 4](ERMS-SVK-BILER.md#elementlista-4-bifogad-fil).
 
