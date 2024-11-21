@@ -6,12 +6,12 @@
 
 - 1 [Inledning](#1-inledning)
   - 1.1 [Arkivpaket](#11-arkivpaket)
-- 2 [Specifikationer för ärendehandlingar](#2-specifikationer-för-ärendehandlingar)
+- 2 [Specifikationer för bilder](#2-specifikationer-för-bilder)
   - 2.2 [XML-dokumentet](#22-xml-dokumentet)
   - 2.3 [Värdelistor](#23-värdelistor)
   - 2.4 [Scheman](#24-scheman)
   - 2.5 [Datatyper](#25-datatyper)
-  - 2.6 [Råd om användandet av *SvKGS Ärendehandlingar*](#26-råd-om-användandet-av-svkgs-ärendehandlingar)
+  - 2.6 [Råd om användandet av *SvKGS Bilder*](#26-råd-om-användandet-av-svkgs-bilder)
 - 3 [Dataelement med exempel](#3-dataelement-med-exempel)
   - 3.1 [Övergripande information om XML-dokumentet](#31-övergripande-information-om-xml-dokumentet)
   - 3.2 [Element som används för information om både ärendeakter och handlingar](#32-element-som-används-för-information-om-både-ärendeakter-och-handlingar)
@@ -87,19 +87,19 @@ Se avsnittet [Scheman](#24-scheman) nedan. Detta är XML-dokumentets grundlägga
       	- appendix (1...1)
 
 
-Notera att elementet `aggragation` inte används i specifikationen. Varje enskild bild betraktas som ett `record`, och bilderna leveras löpande
+Notera att elementet `aggragation` som tillhör ERMS standard inte används i specifikationen. Varje enskild bild betraktas som ett `record`, och bilderna leveras löpande
 utan någon form av aggregering.
 
 Elementet `erms` är dokumentets rot-element. Elementet `control` innehåller underelement med information om
 själva XML-dokumentet (se avsnitt [3.1. Övergripande information om XML-dokumentet](#31-övergripande-information-om-xml-dokumentet)).
 
 Elementet `records` rymmer underelement av typen `record`, vilket i det här fallet betyder bild.
-(se avsnitt [3.3. Information om ärendeakter](#33-information-om-ärendeakter)).
+(se avsnitt [3.3. Information om bilder](#33-information-om-bilder)).
 
-Varje `record` kan innehålla flera elementet av typen `appendix` som är en bifogad bildfil till den registrerade bilden.
+I ERMS-standard kan varje `record` innehålla ett eller flera element av typen `appendix` som är en bifogad bildfil till den registrerade bilden.
 (se avsnitt [3.5. Information om bifogade filer](#35-information-om-bifogade-filer)).
 
-Observera att det tillagda elementet `svkAppendix` används i *SvKGS Bilder* i stället för ERMS-elementet `appendix`.
+I *SvKGS Bilder* används det tillagda elementet `svkAppendix` i stället för ERMS-elementet `appendix`.
 
 Till varje `record` får endast *en* fil kopplas (det är en anpassning av ERMS-standrad).
 
@@ -139,25 +139,25 @@ I detta schema definieras alla element som är Svenska kyrkans tillägg till ERM
 specifikt för *SvKGS Ärendehandlingar* utan används i andra anpassningar av ERMS.
 Schemat är publikt tillgängligt på [Github](https://github.com/svkau/ERMS-SVK-element).
 
-**ERMS-SVK-ARENDE.xsd**<br/>
+**ERMS-SVK-BILDER.xsd**<br/>
 Schemat reglerar själva strukturen på den del av XML-dokumentet som utgörs av Svenska kyrkans tillägg
-och vilka tillagda element som får användas i enlighet med SvKGS Ärendehandlingar.
+och vilka tillagda element som får användas i enlighet med *SvKGS Bilder*.
 Denna del av XML-dokumentet ingår i ERMS-elementet `additionalXMLData`.
 
-**ERMS-SVK-ARENDEN.sch**<br/>
+**ERMS-SVK-BILDER.sch**<br/>
 Schemat innehåller Svenska kyrkans regler som
-de beskrivs i *SvKGS Ärendehandlingar*. De två sistnämnda schemana är specifika för
-*SvKGS Ärendehandlingar* och är publikt tillgängliga på [Github](https://github.com/svkau/SvKGS-Arendehandlingar).
+de beskrivs i *SvKGS Bilder*. De två sistnämnda schemana är specifika för
+*SvKGS Bilder* och är publikt tillgängliga på [Github](https://github.com/svkau/SvKGS-Bilder).
 
 En särskild anmärkning om elementet `appendix` i behöver göras. Eftersom det har funnits behov av att
 utöka detta element med flera underelement, och då det inte finns något element `additionalXMLData` här,
 används inte `appendix` utan i stället ett eget element `svkAppendix` som definieras i ERMS-SVK-element.xsd.
 
-Användandet av elementet appendix förbjuds genom en regel i ERMS-SVK-ARENDEN.sch.
+Användandet av elementet appendix förbjuds genom en regel i ERMS-SVK-Bilder.sch.
 
-För att validera ett XML-dokument och avgöra om det följer specifikationerna i *SvKGS Ärendehandlingar*, måste man
-alltså använda både **ERMS_v3.xsd** och **ERMS-SVK-ARENDE.xsd** (som i sin tur importerar och använder **ERMS-SVK-element.xsd**).
-Därtill måste dokumentet valideras mot **ERMS-SVK-ARENDE.sch**.
+För att validera ett XML-dokument och avgöra om det följer specifikationerna i *SvKGS Bilder*, måste man
+alltså använda både **ERMS_v3.xsd** och **ERMS-SVK-BILDER.xsd** (som i sin tur importerar och använder **ERMS-SVK-element.xsd**).
+Därtill måste dokumentet valideras mot **ERMS-SVK-BILDER.sch**.
 
 ## 2.5. Datatyper
 
@@ -186,9 +186,9 @@ Vid angivande av decimal används punkt som decimalavgränsare.
 Information om bilderna (metadata) ska dokumenteras både i XML-dokumentet (ERMS) och inbäddat i respektive bildfil i XMP-format.
 Utöver den obligatoriska informationen är det möjligt att i XMP-strukturen spara vilken metadata man själv önskar.
 
-Den XMP-information som finns inbäddad i bildfilen ska också ingå i ERMS-dokumentet. Se exemplet XMP-data nedan.
+Den XMP-information som finns inbäddad i bildfilen ska i sin helhet ingå i ERMS-dokumentet som underelement till elementet `additionalXMLData`. Se [exempelfilen](exempel.xml).
 
-Dessutom måste den information som finns i ERMS-fälten vara identisk med den information som finns i motsvarande fält i XMP-strukturen enligt nedanstående tabell
+Dessutom måste den information som finns i ERMS-fälten vara identisk med den information som finns i motsvarande fält i XMP-strukturen enligt nedanstående tabell:
 
 | ERMS                           | XMP                    |
 |--------------------------------|------------------------|
@@ -199,9 +199,6 @@ Dessutom måste den information som finns i ERMS-fälten vara identisk med den i
 | ERMS-SVK:104 - *Skapare*       |  dc:creator            |
 | ERMS-SVK:109 - *Beskrivning*   |  dc:description        |
 | ERMS-SVK:111 - *Skapat*        |  exif:DateTimeOriginal |
-| ERMS-SVK:164 - *Skapad*        |  xmp:CreateDate        |
-| ERMS-SVK:165 - *Senast ändrad* |  xmp:ModifyDate        |
-
 
 - **XMP namespace** (xmp): `http://ns.adobe.com/xap/1.0/`
 - **XMP Media Management namespace** (xmpMM): `http://ns.adobe.com/xap/1.0/mm/`
@@ -244,7 +241,7 @@ Den underlättare förståelsen av informationen, om XML-filen skulle separeras 
 
 > Obligatoriskt. Elementet får upprepas.
 
-> Tre identifikatorer måste användas: arkivbildarens namn och id samt ärendets nummer. Se exempel nedan.
+> Tre identifikatorer måste användas: arkivbildarens namn och id samt ett UUID. Se exempel nedan.
 
 > **XML-element:**	`identification`<br/>
 > **Datatyp:**	string
@@ -257,7 +254,7 @@ Den underlättare förståelsen av informationen, om XML-filen skulle separeras 
 
 > Beskrivning av identifikatorn.
 
-> Obligatoriskt. Värdet väljs från [Värdelista 1](ERMS-SVK-ARENDE-vardelistor.md#erms-svk-arende-v%C3%A4rdelista-1---typ-av-identifikator).
+> Obligatoriskt. Värdet väljs från [Värdelista 1](ERMS-SVK-BILDER-vardelistor.md#erms-svk-bilder-v%C3%A4rdelista-1---typ-av-identifikator).
 
 > **XML-element:**	`identification/@identificationType`<br/>
 > **Datatyp:**	string
